@@ -8,6 +8,7 @@ import Workout from "./pages/Workout/Workout";
 import Diet from "./pages/Diet/Diet";
 import Progress from "./pages/Progress/Progress";
 import Profile from "./pages/Profile/Profile";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
@@ -22,6 +23,18 @@ function App() {
         <Route path="/progress" element={<Progress />} />
         <Route path="/profile" element={<Profile />} />
       </Routes>
+
+      <ToastContainer
+        position="top-right"
+        autoClose={2500}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        pauseOnHover
+        theme="dark"
+    />
+
+
     </BrowserRouter>
   );
 }
