@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import Button from '../../components/ui/Button';
 import styles from './Register.module.css';
+import { registerUser } from "../../services/authService";
+
 
 const GOALS = [
   { id: 'lose', label: '🔥 Lose weight', desc: 'Burn fat, feel lighter' },
@@ -18,14 +20,35 @@ const Register = () => {
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
   const password = watch('password');
 
-  const onSubmit = async (data) => {
-    if (step === 1) { setStep(2); return; }
-    setLoading(true);
-    await new Promise(r => setTimeout(r, 1600));
-    setLoading(false);
-    window.location.href = '/dashboard';
-  };
+ const onSubmit = async (data) => {
+  // Step 1 -> Go to Step 2
+  if (step === 1) {
+    setStep(2);
+    return;
+  }
 
+  setLoading(true);
+
+  try {
+    const userData = {
+      name: `${data.firstName} ${data.lastName}`,
+      email: data.email,
+      password: data.password,
+    };
+
+    await registerUser(userData);
+
+    alert("Registration Successful!");
+
+    window.location.href = "/login";
+  } catch (error) {
+console.log(error);
+console.log(error.response);
+
+alert(error.response?.data?.message || error.message);  } finally {
+    setLoading(false);
+  }
+};
   return (
     <div className={styles.page}>
       <div className={styles.orb1} />
