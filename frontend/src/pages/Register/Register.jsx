@@ -21,11 +21,16 @@ const Register = () => {
   const password = watch('password');
 
  const onSubmit = async (data) => {
-  // Step 1 -> Go to Step 2
+  console.log("Step:", step);
+  console.log("Form Data:", data);
+
   if (step === 1) {
+    console.log("Going to Step 2");
     setStep(2);
     return;
   }
+
+  console.log("Entered Step 2");
 
   setLoading(true);
 
@@ -36,16 +41,21 @@ const Register = () => {
       password: data.password,
     };
 
-    await registerUser(userData);
+    console.log("Sending:", userData);
+
+    const res = await registerUser(userData);
+
+    console.log("Success:", res.data);
 
     alert("Registration Successful!");
 
     window.location.href = "/login";
   } catch (error) {
-console.log(error);
-console.log(error.response);
+    console.log("ERROR:", error);
+    console.log("RESPONSE:", error.response);
 
-alert(error.response?.data?.message || error.message);  } finally {
+    alert(error.response?.data?.message || error.message);
+  } finally {
     setLoading(false);
   }
 };
