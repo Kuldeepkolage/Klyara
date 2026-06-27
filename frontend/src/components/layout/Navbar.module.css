@@ -1,222 +1,658 @@
+/* ═══════════════════════════════════════════════════════════════
+   KLYRA NAVBAR — Premium SaaS Navbar (CSS Modules)
+   Stripe · Vercel · Linear · Notion inspired
+═══════════════════════════════════════════════════════════════ */
+
+/* ─── Base Shell ─────────────────────────────────────────────── */
 .navbar {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  z-index: 100;
-  padding: 20px 0;
-  transition: all var(--transition-base);
+  z-index: 1000;
+  /* Start fully transparent */
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition:
+    background   300ms cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 300ms cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow   300ms cubic-bezier(0.4, 0, 0.2, 1),
+    padding      300ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.navbar--scrolled {
-  padding: 12px 0;
-  background: rgba(11,7,20,0.85);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border-bottom: 1px solid var(--border-subtle);
-  box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+/* ─── Scrolled State — glassmorphism kicks in ─────────────────── */
+.scrolled {
+  background:  rgba(11, 7, 20, 0.72);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom-color: rgba(124, 58, 237, 0.18);
+  box-shadow:
+    0 1px 0 0 rgba(124, 58, 237, 0.10),
+    0 8px 32px rgba(0, 0, 0, 0.35);
 }
 
+/* ─── Inner Layout ───────────────────────────────────────────── */
 .inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  max-width: 1200px;
+  max-width: 1280px;
   margin: 0 auto;
-  padding: 0 24px;
-  gap: 32px;
+  padding: 0 28px;
+  height: 64px;
+  gap: 16px;
+  transition: height 300ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* ─── Logo ─── */
+/* Slightly shorter when scrolled */
+.scrolled .inner {
+  height: 56px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   LOGO
+═══════════════════════════════════════════════════════════════ */
 .logo {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 9px;
   text-decoration: none;
   flex-shrink: 0;
+  outline-offset: 4px;
 }
 
-.logoIcon {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  background: var(--gradient-primary);
+/* Gradient square mark */
+.logoMark {
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  background: linear-gradient(135deg, #7C3AED 0%, #2563EB 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 900;
-  font-size: 18px;
+  font-size: 17px;
   color: #fff;
-  box-shadow: 0 4px 14px rgba(124,58,237,0.4);
+  letter-spacing: -0.02em;
+  box-shadow:
+    0 0 0 1px rgba(124, 58, 237, 0.4),
+    0 4px 14px rgba(124, 58, 237, 0.35);
+  transition: box-shadow 250ms ease, transform 250ms ease;
   flex-shrink: 0;
 }
 
-.logoText {
-  font-size: var(--text-xl);
+.logo:hover .logoMark {
+  transform: scale(1.06);
+  box-shadow:
+    0 0 0 1px rgba(124, 58, 237, 0.6),
+    0 6px 20px rgba(124, 58, 237, 0.45);
+}
+
+/* Wordmark */
+.logoName {
+  font-size: 19px;
   font-weight: 800;
-  letter-spacing: -0.04em;
-  background: var(--gradient-primary);
+  letter-spacing: -0.05em;
+  background: linear-gradient(135deg, #A78BFA 0%, #60A5FA 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CENTER NAVIGATION
+═══════════════════════════════════════════════════════════════ */
+.centerNav {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex: 1;
+  justify-content: center;
+}
+
+/* ─── Individual Nav Link ────────────────────────────────────── */
+.navLink {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 13px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(196, 181, 253, 0.75); /* text-secondary muted */
+  text-decoration: none;
+  white-space: nowrap;
+  letter-spacing: -0.01em;
+  /* Smooth color + bg on hover */
+  transition:
+    color      200ms ease,
+    background 200ms ease;
+  cursor: pointer;
+}
+
+.navLink:hover {
+  color: #F8F7FF;
+  background: rgba(124, 58, 237, 0.10);
+}
+
+/* ─── Active Link ────────────────────────────────────────────── */
+.navLinkActive {
+  color: #F8F7FF;
+  font-weight: 600;
+  /* Gradient text for active */
+  background: linear-gradient(135deg, #A78BFA, #60A5FA);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* ─── Desktop Nav ─── */
-.desktopNav {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex: 1;
-  justify-content: center;
+/* Pill behind active link */
+.activePill {
+  position: absolute;
+  inset: 0;
+  border-radius: 8px;
+  background: rgba(124, 58, 237, 0.14);
+  border: 1px solid rgba(124, 58, 237, 0.25);
+  /* Needed because gradient text clips backgrounds */
+  z-index: -1;
 }
 
-.navLink {
+/* ═══════════════════════════════════════════════════════════════
+   RIGHT CONTROLS
+═══════════════════════════════════════════════════════════════ */
+.rightControls {
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 8px 14px;
-  border-radius: var(--radius-md);
-  font-size: var(--text-sm);
-  font-weight: 500;
-  color: var(--text-secondary);
-  text-decoration: none;
-  transition: all var(--transition-fast);
-}
-
-.navLink:hover {
-  color: var(--text-primary);
-  background: rgba(124,58,237,0.08);
-}
-
-.navLink--active {
-  color: var(--violet-light);
-  background: rgba(124,58,237,0.12);
-  font-weight: 600;
-}
-
-.navIcon {
-  font-size: 14px;
-}
-
-/* ─── Actions ─── */
-.actions {
-  display: flex;
-  align-items: center;
-  gap: 10px;
   flex-shrink: 0;
 }
 
-.avatar {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  overflow: hidden;
-  border: 2px solid var(--border-medium);
-  transition: border-color var(--transition-base);
-  display: block;
+/* ─── Landing: Login text link ──────────────────────────────── */
+.loginLink {
+  padding: 8px 14px;
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(196, 181, 253, 0.8);
+  text-decoration: none;
+  border-radius: 8px;
+  transition: color 200ms ease, background 200ms ease;
 }
 
-.avatar:hover {
-  border-color: var(--violet);
+.loginLink:hover {
+  color: #F8F7FF;
+  background: rgba(124, 58, 237, 0.10);
 }
 
-.avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  background: var(--bg-card);
-}
-
-/* ─── Hamburger ─── */
-.hamburger {
-  display: none;
-  flex-direction: column;
-  gap: 5px;
-  padding: 8px;
+/* ─── Icon Buttons (search, bell) ───────────────────────────── */
+.iconBtn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: transparent;
+  border: 1px solid transparent;
+  color: rgba(196, 181, 253, 0.7);
   cursor: pointer;
-  background: none;
-  border: none;
+  transition:
+    color      200ms ease,
+    background 200ms ease,
+    border-color 200ms ease,
+    transform  150ms ease;
 }
 
-.hamburger span {
-  display: block;
-  width: 22px;
-  height: 2px;
-  background: var(--text-secondary);
-  border-radius: 2px;
-  transition: all var(--transition-base);
-  transform-origin: center;
+.iconBtn:hover {
+  color: #F8F7FF;
+  background: rgba(124, 58, 237, 0.10);
+  border-color: rgba(124, 58, 237, 0.20);
+  transform: translateY(-1px);
 }
 
-.hamburger--open span:nth-child(1) {
-  transform: translateY(7px) rotate(45deg);
-}
-.hamburger--open span:nth-child(2) {
-  opacity: 0;
-  transform: scaleX(0);
-}
-.hamburger--open span:nth-child(3) {
-  transform: translateY(-7px) rotate(-45deg);
+.iconBtn:active {
+  transform: translateY(0);
 }
 
-/* ─── Mobile Menu ─── */
-.mobileMenu {
-  display: none;
-  flex-direction: column;
-  gap: 4px;
-  padding: 16px 24px;
-  border-top: 1px solid var(--border-subtle);
-  background: rgba(11,7,20,0.95);
-  backdrop-filter: blur(24px);
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height var(--transition-slow), padding var(--transition-slow);
+/* Notification dot */
+.notifDot {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #7C3AED, #2563EB);
+  border: 2px solid #0B0714;
+  font-size: 9px;
+  font-weight: 700;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
 }
 
-.mobileMenu--open {
-  max-height: 400px;
-  padding: 16px 24px 24px;
+/* ═══════════════════════════════════════════════════════════════
+   SEARCH POPOVER
+═══════════════════════════════════════════════════════════════ */
+.searchWrap {
+  position: relative;
 }
 
-.mobileLink {
+.searchPopover {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 300px;
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 12px 16px;
-  border-radius: var(--radius-md);
-  color: var(--text-secondary);
+  padding: 10px 14px;
+  background: rgba(19, 13, 36, 0.95);
+  border: 1px solid rgba(124, 58, 237, 0.25);
+  border-radius: 12px;
+  backdrop-filter: blur(24px);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
+  /* Hidden by default */
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-6px) scale(0.98);
+  transition:
+    opacity   200ms ease,
+    transform 200ms ease;
+}
+
+.searchPopover > svg {
+  color: rgba(124, 58, 237, 0.6);
+  flex-shrink: 0;
+}
+
+.searchPopoverOpen {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+}
+
+.searchInput {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  font-family: inherit;
+  color: #F8F7FF;
+}
+
+.searchInput::placeholder {
+  color: rgba(124, 110, 174, 0.5);
+}
+
+.clearBtn {
+  background: none;
+  border: none;
+  color: rgba(124, 110, 174, 0.6);
+  cursor: pointer;
+  font-size: 12px;
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: color 150ms ease;
+}
+
+.clearBtn:hover {
+  color: #F8F7FF;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   AVATAR + DROPDOWN
+═══════════════════════════════════════════════════════════════ */
+.avatarWrap {
+  position: relative;
+}
+
+.avatarBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 3px 3px 3px;
+  border-radius: 10px;
+  background: transparent;
+  border: 1px solid rgba(124, 58, 237, 0.25);
+  cursor: pointer;
+  transition:
+    border-color 200ms ease,
+    background   200ms ease,
+    box-shadow   200ms ease;
+}
+
+.avatarBtn:hover {
+  border-color: rgba(124, 58, 237, 0.5);
+  background: rgba(124, 58, 237, 0.08);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.10);
+}
+
+.avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 7px;
+  object-fit: cover;
+  background: #1A1235;
+  display: block;
+}
+
+.avatarChevron {
+  color: rgba(196, 181, 253, 0.6);
+  padding-right: 4px;
+  display: flex;
+  align-items: center;
+}
+
+/* ─── Dropdown Menu ─────────────────────────────────────────── */
+.dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 220px;
+  background: rgba(19, 13, 36, 0.97);
+  border: 1px solid rgba(124, 58, 237, 0.22);
+  border-radius: 14px;
+  backdrop-filter: blur(28px);
+  box-shadow:
+    0 2px 8px rgba(0,0,0,0.2),
+    0 20px 60px rgba(0, 0, 0, 0.55);
+  padding: 6px;
+  /* Hidden state */
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-8px) scale(0.97);
+  transform-origin: top right;
+  transition:
+    opacity   220ms cubic-bezier(0.4, 0, 0.2, 1),
+    transform 220ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dropdownOpen {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+}
+
+/* User header inside dropdown */
+.dropdownHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 10px 12px;
+}
+
+.dropdownAvatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  object-fit: cover;
+  background: #1A1235;
+  border: 1px solid rgba(124, 58, 237, 0.2);
+  flex-shrink: 0;
+}
+
+.dropdownName {
+  font-size: 13px;
+  font-weight: 700;
+  color: #F8F7FF;
+  letter-spacing: -0.02em;
+}
+
+.dropdownEmail {
+  font-size: 11px;
+  color: rgba(124, 110, 174, 0.7);
+  margin-top: 1px;
+}
+
+.dropdownDivider {
+  height: 1px;
+  background: rgba(124, 58, 237, 0.12);
+  margin: 3px 4px;
+}
+
+/* Each dropdown item (link or button) */
+.dropdownItem {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  padding: 9px 10px;
+  border-radius: 8px;
+  font-size: 13.5px;
   font-weight: 500;
-  font-size: var(--text-base);
+  color: rgba(196, 181, 253, 0.85);
   text-decoration: none;
-  transition: all var(--transition-fast);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition:
+    color      150ms ease,
+    background 150ms ease;
+  text-align: left;
+}
+
+.dropdownItem:hover {
+  color: #F8F7FF;
+  background: rgba(124, 58, 237, 0.10);
+}
+
+.dropdownItem svg {
+  flex-shrink: 0;
+  opacity: 0.65;
+}
+
+.dropdownItem:hover svg {
+  opacity: 1;
+}
+
+/* Logout: red tint on hover */
+.dropdownLogout:hover {
+  color: #F87171;
+  background: rgba(239, 68, 68, 0.10);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   HAMBURGER BUTTON
+═══════════════════════════════════════════════════════════════ */
+.hamburger {
+  display: none; /* hidden on desktop */
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+  padding: 8px;
+  border-radius: 8px;
+  background: transparent;
+  border: 1px solid rgba(124, 58, 237, 0.2);
+  cursor: pointer;
+  transition: background 200ms ease, border-color 200ms ease;
+}
+
+.hamburger:hover {
+  background: rgba(124, 58, 237, 0.10);
+  border-color: rgba(124, 58, 237, 0.35);
+}
+
+/* The three bars */
+.hamburger span {
+  display: block;
+  width: 18px;
+  height: 1.5px;
+  background: rgba(196, 181, 253, 0.8);
+  border-radius: 2px;
+  transition: transform 280ms cubic-bezier(0.4, 0, 0.2, 1), opacity 200ms ease;
+  transform-origin: center;
+}
+
+/* Open state: animate to ✕ */
+.hamburgerOpen span:nth-child(1) { transform: translateY(6.5px) rotate(45deg);  }
+.hamburgerOpen span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.hamburgerOpen span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+/* ═══════════════════════════════════════════════════════════════
+   MOBILE MENU PANEL
+═══════════════════════════════════════════════════════════════ */
+.mobileMenu {
+  /* Slide down from the navbar */
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition:
+    max-height 360ms cubic-bezier(0.4, 0, 0.2, 1),
+    opacity    280ms ease;
+  background: rgba(11, 7, 20, 0.97);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-top: 1px solid transparent;
+}
+
+.mobileMenuOpen {
+  max-height: 600px;
+  opacity: 1;
+  border-top-color: rgba(124, 58, 237, 0.15);
+}
+
+.mobileNav {
+  display: flex;
+  flex-direction: column;
+  padding: 16px 20px;
+  gap: 2px;
+}
+
+/* Mobile nav link */
+.mobileLink {
+  display: block;
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 500;
+  color: rgba(196, 181, 253, 0.75);
+  text-decoration: none;
+  transition: color 180ms ease, background 180ms ease;
 }
 
 .mobileLink:hover {
-  background: rgba(124,58,237,0.1);
-  color: var(--text-primary);
+  color: #F8F7FF;
+  background: rgba(124, 58, 237, 0.10);
 }
 
-.mobileActions {
+/* Active mobile link */
+.mobileLinkActive {
+  color: #F8F7FF;
+  font-weight: 600;
+  background: rgba(124, 58, 237, 0.14);
+  border: 1px solid rgba(124, 58, 237, 0.22);
+}
+
+/* Mobile CTA buttons */
+.mobileCta {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 1px solid var(--border-subtle);
+  padding: 16px 20px 24px;
+  border-top: 1px solid rgba(124, 58, 237, 0.10);
 }
 
-/* ─── Responsive ─── */
-@media (max-width: 768px) {
-  .desktopNav {
+.mobileCta a {
+  display: block;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   MOBILE BACKDROP OVERLAY
+═══════════════════════════════════════════════════════════════ */
+/* rendered as a sibling of <header> in the JSX */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 999; /* just below navbar (1000) */
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(2px);
+  animation: fadeInBackdrop 250ms ease both;
+}
+
+@keyframes fadeInBackdrop {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE BREAKPOINTS
+═══════════════════════════════════════════════════════════════ */
+
+/* ── Tablet: hide some nav items, show hamburger ── */
+@media (max-width: 1024px) {
+  .centerNav {
+    /* Hide the less-important links on tablet */
+    gap: 0;
+  }
+
+  /* Hide Blog + Contact on tablet */
+  .centerNav a:nth-child(n+6) {
     display: none;
   }
+}
+
+/* ── Mobile: collapse everything into hamburger ── */
+@media (max-width: 768px) {
+  .inner {
+    height: 60px;
+    padding: 0 20px;
+  }
+
+  .scrolled .inner {
+    height: 54px;
+  }
+
+  /* Hide desktop nav entirely */
+  .centerNav {
+    display: none;
+  }
+
+  /* Hide desktop right-side items except hamburger */
+  .loginLink,
+  .iconBtn,
+  .avatarWrap,
+  .searchWrap {
+    display: none;
+  }
+
+  /* Show hamburger */
   .hamburger {
     display: flex;
   }
-  .mobileMenu {
-    display: flex;
-  }
-  .actions > a:not(:last-child) {
+
+  /* Show the Get Started button only on mobile landing (smaller) */
+  .rightControls > a {
+    /* hide the Get Started button — accessible via mobile menu */
     display: none;
   }
+}
+
+/* ── Very small screens ── */
+@media (max-width: 380px) {
+  .logoName {
+    display: none; /* just show the mark on tiny screens */
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   FOCUS VISIBLE — keyboard accessibility
+═══════════════════════════════════════════════════════════════ */
+.navLink:focus-visible,
+.iconBtn:focus-visible,
+.avatarBtn:focus-visible,
+.hamburger:focus-visible,
+.dropdownItem:focus-visible,
+.loginLink:focus-visible,
+.mobileLink:focus-visible {
+  outline: 2px solid rgba(167, 139, 250, 0.7);
+  outline-offset: 3px;
 }

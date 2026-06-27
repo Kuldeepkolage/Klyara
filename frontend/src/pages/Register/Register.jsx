@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from 'react-hook-form';
 import Button from '../../components/ui/Button';
 import styles from './Register.module.css';
 import { registerUser } from "../../services/authService";
+import { toast } from "react-toastify";
 
 
 const GOALS = [
@@ -15,9 +16,17 @@ const GOALS = [
 
 const Register = () => {
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [selectedGoal, setSelectedGoal] = useState('');
-  const { register, handleSubmit, watch, formState: { errors } } = useForm();
+  const {
+  register,
+  handleSubmit,
+  watch,
+  formState: { errors }
+} = useForm({
+  shouldUnregister: true,
+});
   const password = watch('password');
 
  const onSubmit = async (data) => {
@@ -47,14 +56,13 @@ const Register = () => {
 
     console.log("Success:", res.data);
 
-    alert("Registration Successful!");
+    toast.success("Registration Successful 🎉");
 
-    window.location.href = "/login";
+    navigate("/login");
   } catch (error) {
     console.log("ERROR:", error);
     console.log("RESPONSE:", error.response);
-
-    alert(error.response?.data?.message || error.message);
+    toast.error(error.response?.data?.message || error.message);
   } finally {
     setLoading(false);
   }
@@ -89,8 +97,13 @@ const Register = () => {
           </p>
         </div>
 
-        <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+        <form
+  className={styles.form}
+  autoComplete="off"
+  onSubmit={handleSubmit(onSubmit)}
+>
           {step === 1 ? (
+  <div key="step1">
             <>
               <div className={styles.row}>
                 <div className={styles.field}>
@@ -132,6 +145,7 @@ const Register = () => {
                 <input
                   className={`input-base ${errors.password ? styles['input--error'] : ''}`}
                   type="password"
+                  autoComplete="new-password"
                   placeholder="Min. 8 characters"
                   {...register('password', {
                     required: 'Password is required',
@@ -146,6 +160,7 @@ const Register = () => {
                 <input
                   className={`input-base ${errors.confirm ? styles['input--error'] : ''}`}
                   type="password"
+                  autoComplete="new-password"
                   placeholder="Repeat password"
                   {...register('confirm', {
                     required: 'Please confirm password',
@@ -159,7 +174,9 @@ const Register = () => {
                 Continue →
               </Button>
             </>
+            </div>
           ) : (
+  <div key="step2">
             <>
               <div className={styles.goals}>
                 {GOALS.map((g) => (
@@ -177,22 +194,23 @@ const Register = () => {
 
               <div className={styles.field}>
                 <label className={styles.label}>Current weight (kg)</label>
-                <input className="input-base" type="number" placeholder="70" {...register('weight')} />
+                <input className="input-base" type="number" autoComplete="off" placeholder="70" {...register('weight')} />
               </div>
               <div className={styles.field}>
                 <label className={styles.label}>Target weight (kg)</label>
-                <input className="input-base" type="number" placeholder="65" {...register('target')} />
+                <input className="input-base" type="number" autoComplete="off" placeholder="65" {...register('target')} />
               </div>
 
               <Button type="submit" variant="primary" size="lg" fullWidth loading={loading}>
                 {loading ? 'Creating your plan…' : 'Start my journey 🚀'}
               </Button>
             </>
+            </div>
           )}
         </form>
 
         {step === 2 && (
-          <button className={styles.back} onClick={() => setStep(1)}>← Back</button>
+          <button className={styles.back} type="button" onClick={() => setStep(1)}>← Back</button>
         )}
 
         <p className={styles.switch}>
