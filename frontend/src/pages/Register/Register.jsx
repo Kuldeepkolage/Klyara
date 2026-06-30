@@ -23,9 +23,9 @@ const Register = () => {
   register,
   handleSubmit,
   watch,
-  formState: { errors }
+  formState: { errors },
 } = useForm({
-  shouldUnregister: true,
+  shouldUnregister: false,
 });
   const password = watch('password');
 
